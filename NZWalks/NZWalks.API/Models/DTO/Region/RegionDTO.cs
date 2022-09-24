@@ -1,6 +1,14 @@
-﻿namespace NZWalks.API.Models.Domain
+﻿using NZWalks.API.Models.Domain;
+
+namespace NZWalks.API.Models.DTO.Region
 {
     public class RegionDTO
     {
+        public string Code { get; set; }
+        public string Name { get; set; }
+        public double Longitude { get; set; }
+        public double Latitude { get; set; }
+        public double Area { get; set; }
+        public long Population { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using NZWalks.API.Repository;
 
 namespace NZWalks.API.Features.Region.Handlers.Request
 {
-    public class GetAllRegionRequestHandler : IRequestHandler<GetAllRegionRequest, List<RegionListDTO>>
+    public class GetAllRegionRequestHandler : IRequestHandler<GetAllRegionRequest, List<RegionDTO>>
     {
         private readonly IRegionRepository regionRepository;
         private readonly IMapper mapper;
@@ -18,11 +18,11 @@ namespace NZWalks.API.Features.Region.Handlers.Request
         }
 
 
-        public async Task<List<RegionListDTO>> Handle(GetAllRegionRequest request, CancellationToken cancellationToken)
+        public async Task<List<RegionDTO>> Handle(GetAllRegionRequest request, CancellationToken cancellationToken)
         {
-            var allRegions = await regionRepository.GetAllRegionsAsync();
+            var allRegions = await regionRepository.GetAllAsync();
 
-            var regionList = mapper.Map<List<RegionListDTO>>(allRegions);
+            var regionList = mapper.Map<List<RegionDTO>>(allRegions);
 
             return regionList;
 

@@ -14,36 +14,51 @@ namespace NZWalks.API.Repository
             this.nZWalksDBContext = nZWalksDBContext;
         }
 
-
-        public int Add(Region entity)
+        public async Task<Region> GetAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await nZWalksDBContext.Regions.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public void Delete(int id)
+        public async Task<List<Region>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var allRegions = await nZWalksDBContext.Regions.ToListAsync();
+            return allRegions;
         }
 
-        public Region Get(int id)
+        public async Task<Region> AddAsync(Region entity)
         {
-            throw new NotImplementedException();
+            entity.Id = Guid.NewGuid();
+            await nZWalksDBContext.Regions.AddAsync(entity);
+            await nZWalksDBContext.SaveChangesAsync();
+            return entity;
         }
 
-        public List<Region> GetAll()
+        public async Task<Region> Delete(Guid id)
         {
-            return nZWalksDBContext.Regions.ToList();
+            var regionToDelete = await nZWalksDBContext.Regions.FirstOrDefaultAsync(x => x.Id == id);
+            if (regionToDelete == null)
+                return null;
+            nZWalksDBContext.Regions.Remove(regionToDelete);
+            await nZWalksDBContext.SaveChangesAsync();
+            return regionToDelete;  
         }
 
-        public async Task<List<Region>> GetAllRegionsAsync()
+        public async Task<Region> UpdateAsync(Guid id, Region entity)
         {
-            
-            return await nZWalksDBContext.Regions.ToListAsync();
-        }
+            var regionToUpdate = await nZWalksDBContext.Regions.FirstOrDefaultAsync(x => x.Id == id);
+            if (regionToUpdate == null)
+                return null;
 
-        public int Update(Region entity)
-        {
-            throw new NotImplementedException();
+            regionToUpdate.Code = entity.Code;
+            regionToUpdate.Area = entity.Area;
+            regionToUpdate.Longitude = entity.Longitude;
+            regionToUpdate.Latitude = entity.Latitude;
+            regionToUpdate.Name = entity.Name;
+
+
+            nZWalksDBContext.Regions.Update(regionToUpdate);
+            await nZWalksDBContext.SaveChangesAsync();
+            return regionToUpdate;
         }
     }
 }
