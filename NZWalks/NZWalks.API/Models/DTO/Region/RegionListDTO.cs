@@ -10,6 +10,5 @@ namespace NZWalks.API.Models.DTO.Region
         public double Latitude { get; set; }
         public double Area { get; set; }
         public long Population { get; set; }
-        //navigational properties
     }
 }
