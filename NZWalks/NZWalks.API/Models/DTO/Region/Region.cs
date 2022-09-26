@@ -1,8 +1,8 @@
 ﻿using NZWalks.API.Models.Domain;
 
-namespace NZWalks.API.Models.DTO.Region
+namespace NZWalks.API.Models.DTO
 {
-    public class RegionDTO
+    public class Region
     {
         public string Code { get; set; }
         public string Name { get; set; }

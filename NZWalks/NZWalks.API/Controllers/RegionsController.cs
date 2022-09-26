@@ -1,9 +1,7 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 using Microsoft.AspNetCore.Mvc;
 using NZWalks.API.Models.Domain;
-using NZWalks.API.Models.DTO.Region;
 using NZWalks.API.Repository;
 
 namespace NZWalks.API.Controllers
@@ -27,7 +25,7 @@ namespace NZWalks.API.Controllers
         {
             var regions = await regionRepository.GetAllAsync();
 
-            var regionListObj = mapper.Map<List<RegionDTO>>(regions);
+            var regionListObj = mapper.Map<List<Models.DTO.Region>>(regions);
 
             return Ok(regionListObj);
         }
@@ -40,16 +38,16 @@ namespace NZWalks.API.Controllers
             var regionDetails = await regionRepository.GetAsync(Id);
             if(regionDetails == null)
                 return NotFound();
-            return Ok(mapper.Map<RegionDTO>(regionDetails));
+            return Ok(mapper.Map<Region>(regionDetails));
         }
 
         [HttpPost]
         [Route("nz-region/AddRegion")]
-        public async Task<IActionResult> AddRegionAsync(RegionDTO region)
+        public async Task<IActionResult> AddRegionAsync(Models.DTO.Region region)
         {
-            var regionToPersist = mapper.Map<Region>(region);
+            var regionToPersist = mapper.Map<Models.Domain.Region>(region);
             await regionRepository.AddAsync(regionToPersist);
-            mapper.Map<RegionDTO>(regionToPersist);
+            mapper.Map<Region>(regionToPersist);
             return CreatedAtAction(nameof(GetRegion), new { Id = regionToPersist.Id }, region);
         }
 
@@ -61,15 +59,15 @@ namespace NZWalks.API.Controllers
             if (deletedRegion == null)
                 return NotFound();
 
-            var region = mapper.Map<RegionDTO>(deletedRegion);
+            var region = mapper.Map<Region>(deletedRegion);
             return Ok(region);
         }
 
         [HttpPut]
         [Route("nz-region/UpdateRegion/{id:guid}")]
-        public async Task<IActionResult> UpdateRegionByIdAsync(Guid id, RegionDTO region)
+        public async Task<IActionResult> UpdateRegionByIdAsync(Guid id, Models.DTO.Region region)
         {
-            var regionToUpdate = mapper.Map<Region>(region);
+            var regionToUpdate = mapper.Map<Models.Domain.Region>(region);
             var updatedRegion = await regionRepository.UpdateAsync(id, regionToUpdate);
             if (updatedRegion == null)
                 return NotFound();
