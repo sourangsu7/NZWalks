@@ -8,6 +8,6 @@ namespace NZWalks.API.Models.DTO
         public double Length { get; set; }
         //navigational properties
         public DTO.Region Region { get; set; }
-        public DTO.WalkDifficulty WalkDifficulty { get; set; }
+        public DTO.WalkDifficulty.WalkDifficulty WalkDifficulty { get; set; }
     }
 }
