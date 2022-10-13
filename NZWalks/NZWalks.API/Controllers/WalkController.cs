@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using NZWalks.API.Models.Domain;
 using NZWalks.API.Repository;
 
@@ -7,6 +9,7 @@ namespace NZWalks.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    //[Authorize]
     public class WalkController : Controller
     {
         private readonly IWalkRepository walkRepository;
@@ -21,7 +24,7 @@ namespace NZWalks.API.Controllers
         [Route("region-circuit")]
         public async Task<IActionResult> GetAllAsync()
         {
-            var allWalks = await walkRepository.GetAllAsync();
+            var allWalks =  await walkRepository.GetAllAsync();
             var allWalksAsOutput = mapper.Map<List<Models.DTO.Walk>>(allWalks);
             return Ok(allWalksAsOutput);
         }
@@ -31,8 +34,8 @@ namespace NZWalks.API.Controllers
         [ActionName("GetWalkByIdAsync")]
         public async Task<IActionResult> GetWalkByIdAsync(Guid id)
         {
-            var walk= await walkRepository.GetAsync(id);
-            if(walk == null)
+            var walk = await walkRepository.GetAsync(id);
+            if (walk == null)
                 return NotFound();
             return Ok(mapper.Map<Models.DTO.Walk>(walk));
 
@@ -44,6 +47,7 @@ namespace NZWalks.API.Controllers
            var deletedWalk = await walkRepository.Delete(id);
             if (deletedWalk == null)
                 return NotFound();
+
             return Ok(deletedWalk);
         }
 
